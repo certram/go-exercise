@@ -3,9 +3,10 @@ package dao
 import (
 	"context"
 	"errors"
+	"time"
+
 	"github.com/go-sql-driver/mysql"
 	"gorm.io/gorm"
-	"time"
 )
 
 var (
@@ -22,7 +23,11 @@ func NewUserDAO(db *gorm.DB) *UserDAO {
 		db: db,
 	}
 }
-
+func (dao *UserDAO) FindById(ctx context.Context, id int64) (User, error) {
+	var u User
+	err := dao.db.WithContext(ctx).Where("id = ?", id).First(&u).Error
+	return u, err
+}
 func (dao *UserDAO) FindByEmail(ctx context.Context, email string) (User, error) {
 	var u User
 	err := dao.db.WithContext(ctx).Where("email = ?", email).First(&u).Error
@@ -45,6 +50,10 @@ func (dao *UserDAO) Insert(ctx context.Context, u User) error {
 	}
 	return err
 }
+func (dao *UserDAO) Update(ctx context.Context, u User) error {
+	u.Utime = time.Now().UnixMilli()
+	return dao.db.WithContext(ctx).Model(&u).Updates(u).Error
+}
 
 // User 直接对应数据库表结构
 // 有些人叫做 entity，有些人叫做 model，有些人叫做 PO(persistent object)
@@ -55,7 +64,11 @@ type User struct {
 	Password string
 
 	// 往这面加
-
+	NickName     string `gorm:"type:varchar(12)"`
+	Birthday     string
+	Introduction string `gorm:"type:varchar(300)"`
+	Location     string `gorm:"type:varchar(60)"`
+	Avatar       string
 	// 创建时间，毫秒数
 	Ctime int64
 	// 更新时间，毫秒数

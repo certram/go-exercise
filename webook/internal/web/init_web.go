@@ -27,8 +27,5 @@ func registerUsersRoutes(server *gin.Engine) {
 	//})
 
 	server.GET("/users/profile", u.Profile)
-	// REST 风格
-	//server.GET("/users/:id", func(context *gin.Context) {
-	//
-	//})
+	server.GET("/users/status", u.Status)
 }

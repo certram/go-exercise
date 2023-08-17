@@ -7,10 +7,15 @@ import (
 // User 领域对象，是 DDD 中的 entity
 // BO(business object)
 type User struct {
-	Id       int64
-	Email    string
-	Password string
-	Ctime    time.Time
+	Id           int64
+	Email        string
+	Password     string
+	NickName     string
+	Birthday     string
+	Introduction string
+	Avatar       string
+	Location     string
+	Ctime        time.Time
 }
 
 //type Address struct {

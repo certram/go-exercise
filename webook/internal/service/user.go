@@ -3,8 +3,10 @@ package service
 import (
 	"context"
 	"errors"
+
 	"gitee.com/geekbang/basic-go/webook/internal/domain"
 	"gitee.com/geekbang/basic-go/webook/internal/repository"
+	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -48,4 +50,12 @@ func (svc *UserService) SignUp(ctx context.Context, u domain.User) error {
 	u.Password = string(hash)
 	// 然后就是，存起来
 	return svc.repo.Create(ctx, u)
+}
+func (svc *UserService) Edit(ctx *gin.Context, u domain.User) error {
+	return svc.repo.Edit(ctx, u)
+}
+
+// 根据用户的id获取个人简介
+func (svc *UserService) GetProfile(ctx *gin.Context, id int64) (domain.User, error) {
+	return svc.repo.FindById(ctx, id)
 }
