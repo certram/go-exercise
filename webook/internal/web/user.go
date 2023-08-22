@@ -197,9 +197,10 @@ func (u *UserHandler) Login(ctx *gin.Context) {
 		// 一分钟过期
 		MaxAge: 600,
 	})
-	sess.Save()
+	if err := sess.Save(); err != nil {
+		ctx.String(http.StatusOK, "系统错误")
+	}
 	ctx.String(http.StatusOK, "登录成功")
-	return
 }
 
 func (u *UserHandler) Logout(ctx *gin.Context) {
@@ -211,7 +212,9 @@ func (u *UserHandler) Logout(ctx *gin.Context) {
 		//HttpOnly: true,
 		MaxAge: -1,
 	})
-	sess.Save()
+	if err := sess.Save(); err != nil {
+		ctx.String(http.StatusOK, "系统错误")
+	}
 	ctx.String(http.StatusOK, "退出登录成功")
 }
 

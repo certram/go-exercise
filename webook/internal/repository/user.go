@@ -53,6 +53,7 @@ func (r *UserRepository) FindById(ctx context.Context, id int64) (domain.User, e
 		NickName:     u.NickName,
 		Birthday:     u.Birthday,
 		Introduction: u.Introduction,
+		Location:     u.Location,
 		Avatar:       u.Avatar,
 	}, nil
 	// 先从 cache 里面找

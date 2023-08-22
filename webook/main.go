@@ -25,7 +25,9 @@ func main() {
 
 	userHandler := initUser(db)
 	userHandler.RegisterRoutes(server)
-	server.Run(":8090")
+	if err := server.Run(":8090"); err != nil {
+		return
+	}
 }
 
 func initWebServer() *gin.Engine {
@@ -56,7 +58,7 @@ func initWebServer() *gin.Engine {
 
 	//创建session存储引擎
 	store := cookie.NewStore([]byte("secret"))
-
+	// store := redis.NewStore()
 	// store := memstore.NewStore([]byte("95osj3fUD7fo0mlYdDbncXz4VD2igvf0"),
 	// 	[]byte("0Pf2r0wZBpXVXlQNdpwCXN4ncnlnZSc3"))
 
